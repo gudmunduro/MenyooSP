@@ -56,10 +56,7 @@ namespace sub
 					SET_CLOCK_DATE(1, GET_CLOCK_MONTH() + 1, GET_CLOCK_YEAR());
 				else
 					SET_CLOCK_DATE(GET_CLOCK_DAY_OF_MONTH() + 1, GET_CLOCK_MONTH(), GET_CLOCK_YEAR());
-				NETWORK_OVERRIDE_CLOCK_TIME(0, WeatherOps_minute, GET_CLOCK_SECONDS());
 			}
-			else
-				NETWORK_OVERRIDE_CLOCK_TIME((WeatherOps_hour + 1), WeatherOps_minute, GET_CLOCK_SECONDS());
 			return;
 		}
 		if (WeatherOps_hour_minus) {
@@ -71,10 +68,7 @@ namespace sub
 					SET_CLOCK_DATE(28, GET_CLOCK_MONTH() - 1, GET_CLOCK_YEAR());
 				else
 					SET_CLOCK_DATE(GET_CLOCK_DAY_OF_MONTH() - 1, GET_CLOCK_MONTH(), GET_CLOCK_YEAR());
-				NETWORK_OVERRIDE_CLOCK_TIME(23, WeatherOps_minute, GET_CLOCK_SECONDS());
 			}
-			else
-				NETWORK_OVERRIDE_CLOCK_TIME((WeatherOps_hour - 1), WeatherOps_minute, GET_CLOCK_SECONDS());
 			return;
 		}
 
@@ -87,13 +81,8 @@ namespace sub
 						SET_CLOCK_DATE(1, GET_CLOCK_MONTH() + 1, GET_CLOCK_YEAR());
 					else
 						SET_CLOCK_DATE(GET_CLOCK_DAY_OF_MONTH() + 1, GET_CLOCK_MONTH(), GET_CLOCK_YEAR());
-					NETWORK_OVERRIDE_CLOCK_TIME(0, 0, GET_CLOCK_SECONDS());
 				}
-				else
-					NETWORK_OVERRIDE_CLOCK_TIME(WeatherOps_hour + 1, 0, GET_CLOCK_SECONDS());
 			}
-			else
-				NETWORK_OVERRIDE_CLOCK_TIME(WeatherOps_hour, WeatherOps_minute + 1, GET_CLOCK_SECONDS());
 			return;
 		}
 		if (WeatherOps_minute_minus) {
@@ -105,13 +94,8 @@ namespace sub
 						SET_CLOCK_DATE(29, GET_CLOCK_MONTH() - 1, GET_CLOCK_YEAR());
 					else
 						SET_CLOCK_DATE(GET_CLOCK_DAY_OF_MONTH() - 1, GET_CLOCK_MONTH(), GET_CLOCK_YEAR());
-					NETWORK_OVERRIDE_CLOCK_TIME(23, 60, GET_CLOCK_SECONDS());
 				}
-				else
-					NETWORK_OVERRIDE_CLOCK_TIME(WeatherOps_hour - 1, 60, GET_CLOCK_SECONDS());
 			}
-			else
-				NETWORK_OVERRIDE_CLOCK_TIME(WeatherOps_hour, WeatherOps_minute - 1, GET_CLOCK_SECONDS());
 			return;
 		}
 

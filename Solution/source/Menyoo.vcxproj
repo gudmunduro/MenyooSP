@@ -29,6 +29,7 @@
     <ClCompile Include="Misc\VehicleCruise.cpp" />
     <ClCompile Include="Misc\VehicleFly.cpp" />
     <ClCompile Include="Misc\VehicleTow.cpp" />
+    <ClCompile Include="Natives\NativeEngine.cpp" />
     <ClCompile Include="Scripting\Camera.cpp" />
     <ClCompile Include="Scripting\Checkpoint.cpp" />
     <ClCompile Include="Scripting\CustomHelpText.cpp" />
@@ -109,7 +110,6 @@
     <ClCompile Include="Scripting\GTAvehicle.cpp" />
     <ClCompile Include="Util\keyboard.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Memory\GTAmemory.cpp" />
     <ClCompile Include="Scripting\Rope.cpp" />
     <ClCompile Include="Scripting\Scaleform.cpp" />
     <ClCompile Include="Scripting\Tasks.cpp" />
@@ -139,6 +139,9 @@
     <ClInclude Include="Misc\VehicleCruise.h" />
     <ClInclude Include="Misc\VehicleFly.h" />
     <ClInclude Include="Misc\VehicleTow.h" />
+    <ClInclude Include="Natives\Hash.h" />
+    <ClInclude Include="Natives\NativeEngine.h" />
+    <ClInclude Include="Natives\natives.h" />
     <ClInclude Include="Scripting\Camera.h" />
     <ClInclude Include="Scripting\Checkpoint.h" />
     <ClInclude Include="Scripting\CustomHelpText.h" />
@@ -197,6 +200,7 @@
     <ClInclude Include="Submenus\VehicleSpawner.h" />
     <ClInclude Include="Submenus\WeaponOptions.h" />
     <ClInclude Include="Submenus\WeatherOptions.h" />
+    <ClInclude Include="Util\alt-log.h" />
     <ClInclude Include="Util\ExePath.h" />
     <ClInclude Include="Util\FileLogger.h" />
     <ClInclude Include="Scripting\Game.h" />
@@ -209,8 +213,6 @@
     <ClInclude Include="Scripting\Model.h" />
     <ClInclude Include="Scripting\GTAped.h" />
     <ClInclude Include="macros.h" />
-    <ClInclude Include="Natives\nativeCaller.h" />
-    <ClInclude Include="Natives\natives.h" />
     <ClInclude Include="Natives\natives2.h" />
     <ClInclude Include="Scripting\PTFX.h" />
     <ClInclude Include="Scripting\Tasks.h" />
@@ -219,7 +221,6 @@
     <ClInclude Include="Scripting\GTAplayer.h" />
     <ClInclude Include="Scripting\GTAvehicle.h" />
     <ClInclude Include="Util\keyboard.h" />
-    <ClInclude Include="Memory\GTAmemory.h" />
     <ClInclude Include="Scripting\Rope.h" />
     <ClInclude Include="Scripting\Scaleform.h" />
     <ClInclude Include="Util\GTAmath.h" />
@@ -234,19 +235,19 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Menyoo</RootNamespace>
     <ProjectName>Menyoo</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -299,7 +300,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NativeTrainer_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Projects\RDR2\MenyooRDR2\Solution\source\Submenus\Teleport;D:\Projects\RDR2\MenyooRDR2\Solution\source\Submenus\Spooner;D:\Projects\RDR2\MenyooRDR2\Solution\source\Util;D:\Projects\RDR2\MenyooRDR2\Solution\source\Submenus;D:\Projects\RDR2\MenyooRDR2\Solution\source\Scripting;D:\Projects\RDR2\MenyooRDR2\Solution\source\Natives;D:\Projects\RDR2\MenyooRDR2\Solution\source\Misc;D:\Projects\RDR2\MenyooRDR2\Solution\source\Menu;D:\Projects\RDR2\MenyooRDR2\Solution\source\Memory;D:\Projects\RDR2\MenyooRDR2\Solution\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -312,7 +313,7 @@
       <AdditionalOptions>
       </AdditionalOptions>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionDir)\external\ScriptHookV\SDK\lib\ScriptHookV.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>

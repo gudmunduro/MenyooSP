@@ -533,7 +533,7 @@ namespace World
 
 	void SetBlackout(bool enable)
 	{
-		_SET_BLACKOUT(enable);
+		SET_ARTIFICIAL_LIGHTS_STATE(enable);
 	}
 
 	Hash AddRelationshipGroup(const std::string& groupName)

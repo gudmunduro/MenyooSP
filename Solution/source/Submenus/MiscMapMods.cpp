@@ -96,7 +96,6 @@ namespace sub
 			Model model(hash);
 			GTAprop e = World::CreateProp(hash, Vector3(X, Y, Z), Vector3(pitch, roll, yaw), false, false);
 			e.FreezePosition(true);
-			SET_NETWORK_ID_CAN_MIGRATE(OBJ_TO_NET(e.Handle()), TRUE);
 			e.LodDistance_set(1000000);
 			e.MissionEntity_set(true);
 			model.Unload();

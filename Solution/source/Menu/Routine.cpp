@@ -301,8 +301,8 @@ bool ObjSpawn_forge_assistance = 0;
 // Game - HUD
 void display_full_hud_this_frame(bool bEnabled)
 {
-	DISPLAY_AMMO_THIS_FRAME(bEnabled);
-	DISPLAY_CASH(bEnabled);
+	// DISPLAY_AMMO_THIS_FRAME(bEnabled);
+	// DISPLAY_CASH(bEnabled);
 	//DISPLAY_AREA_NAME(bEnabled);
 
 	std::list<HudComponent> comps
@@ -325,14 +325,14 @@ void display_full_hud_this_frame(bool bEnabled)
 	{
 		for (auto& x : comps)
 		{
-			SHOW_HUD_COMPONENT_THIS_FRAME((int)x);
+			// SHOW_HUD_COMPONENT_THIS_FRAME((int)x);
 		}
 	}
 	else
 	{
 		for (auto& x : comps)
 		{
-			HIDE_HUD_COMPONENT_THIS_FRAME((int)x);
+			HIDE_HUD_AND_RADAR_THIS_FRAME();
 		}
 	}
 }
@@ -390,7 +390,7 @@ void update_nearby_stuff_arrays_tick()
 
 	Ped *peds = new Ped[count * 2 + 2];
 	peds[0] = count;
-	INT found = GET_PED_NEARBY_PEDS(me, peds, -1);
+	INT found = GET_PED_NEARBY_PEDS(me, peds, -1, 1);
 	for (i = 0; i < found; i++)
 	{
 		offsettedID = i * 2 + 2;
@@ -476,7 +476,7 @@ void update_nearby_stuff_arrays_tick()
 // Game - HUD (teleport to wp command) - Doesn't work in SP?
 void SetPauseMenuTeleToWpCommand()
 {
-	//if ((IS_PAUSE_MENU_ACTIVE())
+	/*//if ((IS_PAUSE_MENU_ACTIVE())
 	{
 		if ((PauseMenuState)GET_PAUSE_MENU_STATE() == PauseMenuState::ViewingMap)
 		{
@@ -516,7 +516,7 @@ void SetPauseMenuTeleToWpCommand()
 				_0xF5A2C681787E579D(0.0f, 0.0f, 0.0f, 0.0f); // Offset
 				_SCREEN_DRAW_POSITION_END(); // Safezone end
 				ib.Render2D();*/
-
+	/*
 				(Menu::bit_controller ? DxHookIMG::teleToWpBoxIconGamepad : DxHookIMG::teleToWpBoxIconKeyboard).Draw(0, Vector2(0.5f, 0.04f), Vector2(0.0943f, 0.016f), 0.0f, RGBA::AllWhite());
 
 				if (Menu::bit_controller ? IS_DISABLED_CONTROL_JUST_PRESSED(2, INPUT_FRONTEND_RLEFT) : IsKeyJustUp(VirtualKey::T))
@@ -525,7 +525,7 @@ void SetPauseMenuTeleToWpCommand()
 				}
 			}
 		}
-	}
+	}*/
 }
 
 // PTFX
@@ -567,7 +567,6 @@ void set_sync_clock_time()
 	time_t now = time(0);
 	tm t;
 	localtime_s(&t, &now);
-	NETWORK_OVERRIDE_CLOCK_TIME(t.tm_hour, t.tm_min, t.tm_sec);
 	SET_CLOCK_DATE(t.tm_year + 1900, t.tm_mon, t.tm_mday);
 }
 
@@ -648,13 +647,12 @@ void set_massacre_mode_tick()
 // Misc
 void set_blackoutEmp_mode()
 {
-	_SET_BLACKOUT(TRUE);
+	SET_ARTIFICIAL_LIGHTS_STATE(TRUE);
 
 	for (auto& vehicle : _nearbyVehicles)
 	{
 		if (vehicle == g_myVeh) continue;
 
-		NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle);
 		SET_VEHICLE_ENGINE_ON(vehicle, 0, 1);
 		SET_VEHICLE_LIGHTS(vehicle, 4);
 
@@ -666,8 +664,8 @@ void set_blackoutEmp_mode()
 	TASK_CLEAR_LOOK_AT(0);
 	TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(0, 0);
 	TASK_STAND_STILL(0, 300);
-	TASK_START_SCENARIO_IN_PLACE(0, "WORLD_HUMAN_STAND_IMPATIENT", 800, 1);
-	TASK_USE_MOBILE_PHONE_TIMED(0, 6000);
+	// TASK_START_SCENARIO_IN_PLACE(0, "WORLD_HUMAN_STAND_IMPATIENT", 800, 1);
+	// TASK_USE_MOBILE_PHONE_TIMED(0, 6000);
 	//TASK_START_SCENARIO_IN_PLACE(0, "WORLD_HUMAN_STAND_MOBILE", 6000, 1);
 	TASK_WANDER_STANDARD(0, 0x471c4000, 0);
 	CLOSE_SEQUENCE_TASK(tempSeq);
@@ -707,10 +705,10 @@ void set_self_nearby_peds_calm()
 }
 void network_set_everyone_ignore_player(Player player)
 {
-	SET_POLICE_IGNORE_PLAYER(player, 1);
+	// SET_POLICE_IGNORE_PLAYER(player, 1); SET_LAW_IGNORE_PLAYER?
 	SET_EVERYONE_IGNORE_PLAYER(player, 1);
 	SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(player, 0);
-	SET_IGNORE_LOW_PRIORITY_SHOCKING_EVENTS(player, 1);
+	// SET_IGNORE_LOW_PRIORITY_SHOCKING_EVENTS(player, 1);
 }
 
 // World
@@ -731,9 +729,9 @@ void start_fireworks_at_coord(const Vector3& pos, const Vector3& rot, float scal
 	{
 		std::vector<PCHAR> fw{ "scr_indep_firework_starburst", "scr_indep_firework_fountain", "scr_indep_firework_shotburst", "scr_indep_firework_trailburst" };
 		//_9C720B61("scr_indep_fireworks");
-		_SET_PTFX_ASSET_NEXT_CALL("scr_indep_fireworks");
+		// _SET_PTFX_ASSET_NEXT_CALL("scr_indep_fireworks");
 		SET_PARTICLE_FX_NON_LOOPED_COLOUR(GET_RANDOM_FLOAT_IN_RANGE(0.0f, 1.0f), GET_RANDOM_FLOAT_IN_RANGE(0.0f, 1.0f), GET_RANDOM_FLOAT_IN_RANGE(0.0f, 1.0f));
-		_START_PARTICLE_FX_NON_LOOPED_AT_COORD_2(fw[rand() % 4], pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, 0, 0, 0);
+		// _START_PARTICLE_FX_NON_LOOPED_AT_COORD_2(fw[rand() % 4], pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, scale, 0, 0, 0);
 	}
 }
 
@@ -843,13 +841,13 @@ void set_player_triggerbot(GTAplayer player)
 					if (player.Handle() == PLAYER_ID())
 					{
 						// Raycast or nah?
-						SET_PED_SHOOTS_AT_COORD(playerPed.Handle(), targetPos.x, targetPos.y, targetPos.z, 0);
+						// SET_PED_SHOOTS_AT_COORD(playerPed.Handle(), targetPos.x, targetPos.y, targetPos.z, 0);
 					}
 					else
 					{
 						GTAentity gunObj = GET_CURRENT_PED_WEAPON_ENTITY_INDEX(playerPed.Handle());
 						Vector3& launchPos = gunObj.GetOffsetInWorldCoords(0, gunObj.Dim1().y, 0); //GTAentity(GET_CURRENT_PED_WEAPON_ENTITY_INDEX(ped.Handle())).GetBoneCoords("Gun_Nuzzle");
-						CLEAR_AREA_OF_PROJECTILES(launchPos.x, launchPos.y, launchPos.z, 4.0f, 0);
+						// CLEAR_AREA_OF_PROJECTILES(launchPos.x, launchPos.y, launchPos.z, 4.0f, 0);
 						World::ShootBullet(launchPos, targetPos, playerPed, weap, 5, -1, true, true);
 					}
 				}
@@ -887,7 +885,7 @@ void set_rapid_fire()
 		Vector3& launchPos = camPos + (camDir * (camPos.DistanceTo(gunObj.Position_get()) + 0.4f));
 		Vector3& targPos = camPos + (camDir * 200.0f);
 
-		CLEAR_AREA_OF_PROJECTILES(launchPos.x, launchPos.y, launchPos.z, 6.0f, 0);
+		// CLEAR_AREA_OF_PROJECTILES(launchPos.x, launchPos.y, launchPos.z, 6.0f, 0);
 
 		SET_PAD_SHAKE(0, 250, 125);
 		World::ShootBullet(launchPos, targPos, playerPed, g_myWeap, 5, 24000.0f, true, true);
@@ -918,7 +916,7 @@ void set_soulswitch_gun()
 			&& (IS_DISABLED_CONTROL_JUST_PRESSED(0, INPUT_ATTACK) || (IS_PED_IN_ANY_VEHICLE(playerPed.Handle(), false) && IS_DISABLED_CONTROL_JUST_PRESSED(2, INPUT_VEH_ATTACK))))
 		{
 			Game::Sound::PlayFrontend("Knuckle_Crack_Hard_Cel", "MP_SNACKS_SOUNDSET");
-			_START_SCREEN_EFFECT("MinigameEndNeutral", 0, 0); // FocusIn
+			// _START_SCREEN_EFFECT("MinigameEndNeutral", 0, 0); // FocusIn
 			set_become_ped(soulswitchentity);
 
 			SET_PAD_SHAKE(0, 4000, 210);
@@ -981,7 +979,7 @@ void set_self_resurrectionGun()
 				REVIVE_INJURED_PED(targPed.Handle());
 				targPed.MaxHealth_set(400);
 				targPed.Health_set(200);
-				SET_PED_GENERATES_DEAD_BODY_EVENTS(targPed.Handle(), false);
+				// SET_PED_GENERATES_DEAD_BODY_EVENTS(targPed.Handle(), false);
 				SET_PED_CONFIG_FLAG(targPed.Handle(), 166, 0);
 				SET_PED_CONFIG_FLAG(targPed.Handle(), 187, 0);
 
@@ -1005,7 +1003,7 @@ void set_HVSnipers(bool set)
 	*/
 	if (set && g_myWeap == WEAPON_UNARMED)
 		return;
-	SET_SEETHROUGH(set);
+	// SET_SEETHROUGH(set);
 }
 // Weapon - funguns - onshoot
 void set_teleport_gun()
@@ -1038,7 +1036,7 @@ void set_teleport_gun()
 				ent.RequestControl();
 				ent.Position_set(targetPos);
 				Game::Sound::PlayFrontend("Knuckle_Crack_Hard_Cel", "MP_SNACKS_SOUNDSET");
-				_START_SCREEN_EFFECT("ExplosionJosh3", 0, 0);
+				// _START_SCREEN_EFFECT("ExplosionJosh3", 0, 0);
 			}
 		}
 	}
@@ -1059,7 +1057,7 @@ void set_bullet_gun()
 	Vector3& launchPos = camPos + (camDir * (camPos.DistanceTo(gunObj.Position_get()) + 0.4f));
 	Vector3& targPos = camPos + (camDir * 200.0f);
 
-	CLEAR_AREA_OF_PROJECTILES(launchPos.x, launchPos.y, launchPos.z, 6.0f, 0);
+	// CLEAR_AREA_OF_PROJECTILES(launchPos.x, launchPos.y, launchPos.z, 6.0f, 0);
 	World::ShootBullet(launchPos, targPos, playerPed, bullet_gun_hash, 5, 2500.0f, true, true);
 }
 void set_ped_gun()
@@ -1175,13 +1173,13 @@ void set_triple_bullets()
 		{ 2, 2, 2 }
 	};
 
-	CLEAR_AREA_OF_PROJECTILES(launchPos.x, launchPos.y, launchPos.z, 6.0f, 0);
+	// CLEAR_AREA_OF_PROJECTILES(launchPos.x, launchPos.y, launchPos.z, 6.0f, 0);
 
-	float maxDist = GET_MAX_RANGE_OF_CURRENT_PED_WEAPON(playerPed);
+	// float maxDist = GET_MAX_RANGE_OF_CURRENT_PED_WEAPON(playerPed);
 
-	for (auto& pos : targPos)
+	/*for (auto& pos : targPos)
 		//World::ShootBullet(launchPos, camPos + (camDir * maxDist) + pos, playerPed, g_myWeap, 5, 0xbf800000, true, true);
-		World::ShootBullet(launchPos, GameplayCamera::RaycastForCoord(Vector2(0.0f, 0.0f), playerPed, maxDist, maxDist) + pos, playerPed, g_myWeap, 5, 0xbf800000, true, true);
+		World::ShootBullet(launchPos, GameplayCamera::RaycastForCoord(Vector2(0.0f, 0.0f), playerPed, maxDist, maxDist) + pos, playerPed, g_myWeap, 5, 0xbf800000, true, true);*/
 
 }
 // Forge gun
@@ -1303,9 +1301,9 @@ void set_forge_gun()
 		{
 			FREEZE_ENTITY_POSITION(targ_slot_entity, 0);
 
-			PLAY_SOUND_FROM_ENTITY(-1, "Foot_Swish", targ_slot_entity, "docks_heist_finale_2a_sounds", 0, 0);
-			PLAY_SOUND_FROM_ENTITY(-1, "SUSPENSION_SCRIPT_FORCE", targ_slot_entity, 0, 0, 0);
-			PLAY_SOUND_FROM_ENTITY(-1, "Chopper_Destroyed", PLAYER_PED_ID(), "FBI_HEIST_FIGHT_CHOPPER_SOUNDS", 0, 0);
+			// PLAY_SOUND_FROM_ENTITY(-1, "Foot_Swish", targ_slot_entity, "docks_heist_finale_2a_sounds", 0, 0);
+			// PLAY_SOUND_FROM_ENTITY(-1, "SUSPENSION_SCRIPT_FORCE", targ_slot_entity, 0, 0, 0);
+			// PLAY_SOUND_FROM_ENTITY(-1, "Chopper_Destroyed", PLAYER_PED_ID(), "FBI_HEIST_FIGHT_CHOPPER_SOUNDS", 0, 0);
 			dim2 = GET_GAMEPLAY_CAM_ROT(2);
 			SET_ENTITY_ROTATION(targ_slot_entity, dim2.x, dim2.y, dim2.z, 2, 1);
 			APPLY_FORCE_TO_ENTITY(targ_slot_entity, 1, 0.0f, _globalForgeGun_shootForce, 0.0f, 0.0f, 0.0f, 0.0f, 0, 1, 1, 1, 0, 1);
@@ -1419,7 +1417,7 @@ void set_become_ped(GTAped ped)
 
 	ped.RequestControl();
 	set_ped_invincible_off(oldPed.Handle());
-	CHANGE_PLAYER_PED(PLAYER_ID(), ped.Handle(), true, true); //false,true?
+	// CHANGE_PLAYER_PED(PLAYER_ID(), ped.Handle(), true, true); //false,true?
 
 	GameplayCamera::RelativeHeading_set(0.0f);
 	GameplayCamera::RelativePitch_set(camPitchRelative);
@@ -1434,7 +1432,7 @@ void set_become_ped(GTAped ped)
 
 	ped.GiveWeaponsFromArray(weaponsBackup);
 
-	SET_PED_INFINITE_AMMO_CLIP(ped.Handle(), bit_infinite_ammo);
+	// SET_PED_INFINITE_AMMO_CLIP(ped.Handle(), bit_infinite_ammo);
 
 }
 
@@ -1442,13 +1440,13 @@ void set_become_ped(GTAped ped)
 void set_ped_invincible_on(Ped ped)
 {
 	SET_ENTITY_INVINCIBLE(ped, 1);
-	SET_PED_DIES_IN_WATER(ped, 0);
+	// SET_PED_DIES_IN_WATER(ped, 0);
 	SET_ENTITY_PROOFS(ped, 1, 0, 1, 1, 1, 1, 1, 1);
 }
 void set_ped_invincible_off(Ped ped)
 {
 	SET_ENTITY_INVINCIBLE(ped, 0);
-	SET_PED_DIES_IN_WATER(ped, 1);
+	// SET_PED_DIES_IN_WATER(ped, 1);
 	SET_ENTITY_PROOFS(ped, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 void set_ped_no_ragdoll_on(Ped ped)
@@ -2145,8 +2143,7 @@ void drive_on_water(GTAped ped, Entity& waterobject)
 			ped.RequestControl();
 			SET_ENTITY_COORDS(ped.Handle(), Pos.x, Pos.y, whh, 0, 0, 0, 1);
 		}
-		waterobject = CREATE_OBJECT(objModel.hash, Pos.x, Pos.y, whh - 4.0f, 1, 1, 1);
-		SET_NETWORK_ID_CAN_MIGRATE(OBJ_TO_NET(waterobject), ped != PLAYER_PED_ID());
+		waterobject = CREATE_OBJECT(objModel.hash, Pos.x, Pos.y, whh - 4.0f, 1, 1, 1, 1, 1);
 		SET_ENTITY_COORDS_NO_OFFSET(waterobject, Pos.x, Pos.y, whh, 0, 0, 0);
 		SET_ENTITY_ROTATION(waterobject, 0, 90, 0, 2, 1);
 		FREEZE_ENTITY_POSITION(waterobject, true);
@@ -2790,7 +2787,7 @@ void Menu::loops()
 		if (loop_blackout_mode)
 			set_blackoutEmp_mode();
 		if (loop_simple_blackout_mode)
-			_SET_BLACKOUT(TRUE);
+			SET_ARTIFICIAL_LIGHTS_STATE(TRUE);
 		if (_JumpAroundMode_::bEnabled)
 			_JumpAroundMode_::Tick();
 	}
@@ -2847,12 +2844,6 @@ void Menu::loops()
 
 		if (_globalRainFXIntensity > 0.0f)
 			_SET_RAIN_FX_INTENSITY(_globalRainFXIntensity);
-
-		if (g_frozenRadioStation != -1)
-		{
-			if (GET_PLAYER_RADIO_STATION_INDEX() != g_frozenRadioStation)
-				SET_RADIO_TO_STATION_NAME(GET_RADIO_STATION_NAME(g_frozenRadioStation));
-		}
 
 		if (loop_clearWeaponPickups) {
 			REMOVE_ALL_PICKUPS_OF_TYPE(PICKUP_WEAPON_BULLPUPSHOTGUN);
@@ -2935,16 +2926,16 @@ void Menu::loops()
 	// Ammo hax
 	if (sub::BreatheStuff_catind::loop_player_breatheStuff != sub::BreatheStuff_catind::BreathePtfxType::None)
 		sub::BreatheStuff_catind::set_self_breathe_ptfx(sub::BreatheStuff_catind::loop_player_breatheStuff);
-	if (loop_explosive_rounds)
+	/*if (loop_explosive_rounds)
 		SET_EXPLOSIVE_AMMO_THIS_FRAME(PLAYER_ID());
 	if (loop_explosive_melee)
 		SET_EXPLOSIVE_MELEE_THIS_FRAME(PLAYER_ID());
 	if (loop_flaming_rounds)
-		SET_FIRE_AMMO_THIS_FRAME(PLAYER_ID());
-	if (bit_infinite_ammo && (bit_infinite_ammo_enth != PLAYER_PED_ID() || GET_TIME_SINCE_LAST_DEATH() < 10000))
+		SET_FIRE_AMMO_THIS_FRAME(PLAYER_ID());*/
+	if (bit_infinite_ammo && (bit_infinite_ammo_enth != PLAYER_PED_ID() || /*GET_TIME_SINCE_LAST_DEATH() < 10000*/))
 	{
 		bit_infinite_ammo_enth = PLAYER_PED_ID();
-		SET_PED_INFINITE_AMMO_CLIP(bit_infinite_ammo_enth, true);
+		// SET_PED_INFINITE_AMMO(bit_infinite_ammo_enth, true, GET_CURRENT_PED_WEAPON(PLAYER_PED_ID()));
 	}
 	if (loop_self_inf_parachutes)
 		give_ped_parachute(PLAYER_PED_ID());
@@ -2953,7 +2944,7 @@ void Menu::loops()
 	{
 		SET_PLAYER_WEAPON_DAMAGE_MODIFIER(PLAYER_ID(), loop_weapon_damage_increase);
 		//SET_PLAYER_WEAPON_DEFENSE_MODIFIER(PLAYER_ID(), loop_weapon_damage_increase);
-		SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(PLAYER_ID(), loop_weapon_damage_increase, true);
+		SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(PLAYER_ID(), loop_weapon_damage_increase);
 		//SET_PLAYER_MELEE_WEAPON_DEFENSE_MODIFIER(PLAYER_ID(), loop_weapon_damage_increase);
 	}
 

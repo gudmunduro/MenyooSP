@@ -56,13 +56,11 @@ namespace sub
 		Vector3 Pos1, Pos2;
 		Vehicle oldcar = 0;
 		bool oldcarBool = false;
-		int oldRadioStation = GET_PLAYER_RADIO_STATION_INDEX();
 		bool oldCarOn = true;
 		if (ped.IsInVehicle())
 		{
 			oldcar = ped.CurrentVehicle().GetHandle();
-			oldVelocity = GET_ENTITY_VELOCITY(oldcar);
-			oldCarOn = GET_IS_VEHICLE_ENGINE_RUNNING(oldcar) != 0;
+			oldVelocity = GET_ENTITY_VELOCITY(oldcar, 0); // Idk what the second param is
 			oldcarBool = true;
 		}
 
@@ -87,14 +85,14 @@ namespace sub
 			PTFX::trigger_ptfx_1("proj_xmas_firework", "scr_firework_xmas_burst_rgw", 0, Pos1, Vector3(), 1.0f);
 			//PTFX::trigger_ptfx_1("scr_fbi5a", "scr_fbi5_ped_water_splash", 0, Pos1, Vector3(), 1.5f);
 
-			newcar = CREATE_VEHICLE(model.hash, Pos1.x, Pos1.y, Pos1.z, ped.Heading_get(), 1, 1);
+			newcar = CREATE_VEHICLE(model.hash, Pos1.x, Pos1.y, Pos1.z, ped.Heading_get(), 1, 1, 1, 1);
 			//SET_VEHICLE_ENGINE_ON(newcar, oldCarOn, oldCarOn);
 
 			//if (!IS_ENTITY_IN_AIR(ped) && !IS_ENTITY_IN_WATER(ped)) SET_VEHICLE_ON_GROUND_PROPERLY(newcar, 0.0f);
 
 			SET_VEHICLE_HAS_STRONG_AXLES(newcar, 1);
 			SET_VEHICLE_DIRT_LEVEL(newcar, 0.0f);
-			_SET_VEHICLE_PAINT_FADE(newcar, 0.3f);
+			// _SET_VEHICLE_PAINT_FADE(newcar, 0.3f);
 			//	SET_ENTITY_PROOFS(newcar, 1, 1, 1, 1, 1, 1, 1, 1);
 
 			int newnetid = VEH_TO_NET(newcar);
@@ -137,7 +135,7 @@ namespace sub
 							if (GTAentity(tempPed).RequestControl())
 							{
 								TASK_LEAVE_ANY_VEHICLE(tempPed, 0, 0);
-								CLEAR_PED_TASKS_IMMEDIATELY(tempPed);
+								CLEAR_PED_TASKS_IMMEDIATELY(tempPed, 0, 0);
 							}
 						}
 					}
@@ -156,7 +154,6 @@ namespace sub
 			//SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(newcar, 5);
 			//SET_VEHICLE_NUMBER_PLATE_TEXT(newcar, "MENYOO");
 
-			GTAvehicle(newcar).RadioStation_set(oldRadioStation);
 			GTAvehicle(newcar).CloseAllDoors(true);
 			//if (IS_VEHICLE_A_CONVERTIBLE(newcar, 0)) LOWER_CONVERTIBLE_ROOF(newcar, 1);
 
@@ -789,7 +786,7 @@ namespace sub
 			if (menuPos.x > 0.45f)
 				x_coord = menuPos.x - 0.003f;
 
-			DRAW_RECT(x_coord, y_coord, res.x + 0.003f, res.y + 0.003f, 0, 0, 0, 212);
+			DRAW_RECT(x_coord, y_coord, res.x + 0.003f, res.y + 0.003f, 0, 0, 0, 212, 1, 1);
 
 			auto vit = std::find(vVehicleBmps.begin(), vVehicleBmps.end(), vehModel.hash);
 			if (vit != vVehicleBmps.end()) //if found
@@ -804,7 +801,7 @@ namespace sub
 					PCHAR imgName = const_cast<PCHAR>(vit->imgName.c_str());
 					if (!HAS_STREAMED_TEXTURE_DICT_LOADED(dict))
 						REQUEST_STREAMED_TEXTURE_DICT(dict, false);
-					DRAW_SPRITE(dict, imgName, x_coord, y_coord, res.x, res.y, 0.0f, 255, 255, 255, 255);
+					DRAW_SPRITE(dict, imgName, x_coord, y_coord, res.x, res.y, 0.0f, 255, 255, 255, 255, true);
 				}
 			}
 			else
@@ -1467,7 +1464,7 @@ namespace sub
 
 			auto& nodeVehicleStuff = nodeVehicle.append_child("VehicleProperties");
 
-			// Colours
+			/*// Colours
 			auto& nodeVehicleColours = nodeVehicleStuff.append_child("Colours");
 			int mod1a, mod1b, mod1c;
 			GET_VEHICLE_MOD_COLOR_1(ev.Handle(), &mod1a, &mod1b, &mod1c);
@@ -1507,9 +1504,9 @@ namespace sub
 			//if (eModel.IsBennySupportedVehicle()) {
 			nodeVehicleColours.append_child("LrInterior").text() = ev.InteriorColour_get();
 			nodeVehicleColours.append_child("LrDashboard").text() = ev.DashboardColour_get();
-			nodeVehicleColours.append_child("LrXenonHeadlights").text() = ev.HeadlightColour_get();
+			nodeVehicleColours.append_child("LrXenonHeadlights").text() = ev.HeadlightColour_get();*/
 
-			// Other stuff
+			/*// Other stuff
 			nodeVehicleStuff.append_child("Livery").text() = ev.Livery_get(); // Livery should be applied before paint is applied
 			nodeVehicleStuff.append_child("NumberPlateText").text() = ev.NumberPlateText_get().c_str();
 			nodeVehicleStuff.append_child("NumberPlateIndex").text() = ev.NumberPlateTextIndex_get();
@@ -1525,7 +1522,6 @@ namespace sub
 			nodeVehicleStuff.append_child("EngineOn").text() = ev.EngineRunning_get();
 			nodeVehicleStuff.append_child("EngineHealth").text() = ev.EngineHealth_get();
 			nodeVehicleStuff.append_child("LightsOn").text() = ev.LightsOn_get();
-			nodeVehicleStuff.append_child("IsRadioLoud").text() = _IS_VEHICLE_RADIO_LOUD(ev.Handle());// != 0;
 			nodeVehicleStuff.append_child("LockStatus").text() = (int)ev.LockStatus_get();
 
 			// Neons
@@ -1537,7 +1533,7 @@ namespace sub
 			nodeVehicleNeons.append_child("Back").text() = ev.IsNeonLightOn(VehicleNeonLight::Back);
 			nodeVehicleNeons.append_child("R").text() = neonLightsRgb.R;
 			nodeVehicleNeons.append_child("G").text() = neonLightsRgb.G;
-			nodeVehicleNeons.append_child("B").text() = neonLightsRgb.B;
+			nodeVehicleNeons.append_child("B").text() = neonLightsRgb.B;*/
 
 			// Extras (modExtras)
 			auto& nodeVehicleModExtras = nodeVehicleStuff.append_child("ModExtras");
@@ -1680,7 +1676,7 @@ namespace sub
 				g_myVeh_model = eModel;
 				myVehicle = g_myVeh;
 			}
-			SET_VEHICLE_MOD_KIT(ev.Handle(), 0);
+			// SET_VEHICLE_MOD_KIT(ev.Handle(), 0);
 			set_vehicle_max_upgrades(ev.Handle(), false, _globalSpawnVehicle_invincible, _globalSpawnVehicle_plateType);
 
 			WAIT(100);
@@ -1694,7 +1690,7 @@ namespace sub
 
 			ev.Livery_set(nodeVehicleStuff.child("Livery").text().as_int()); // Livery should be applied before paint is applied
 																			 // Colours
-			auto& nodeVehicleColours = nodeVehicleStuff.child("Colours");
+			/*auto& nodeVehicleColours = nodeVehicleStuff.child("Colours");
 			int mod1a = nodeVehicleColours.child("Mod1_a").text().as_int();
 			int mod1b = nodeVehicleColours.child("Mod1_b").text().as_int();
 			int mod1c = nodeVehicleColours.child("Mod1_c").text().as_int();
@@ -1732,9 +1728,9 @@ namespace sub
 			//if (eModel.IsBennySupportedVehicle()) {
 			ev.InteriorColour_set(nodeVehicleColours.child("LrInterior").text().as_int());
 			ev.DashboardColour_set(nodeVehicleColours.child("LrDashboard").text().as_int());
-			ev.HeadlightColour_set(nodeVehicleColours.child("LrXenonHeadlights").text().as_int());
+			ev.HeadlightColour_set(nodeVehicleColours.child("LrXenonHeadlights").text().as_int());*/
 
-			// Other stuff
+			/*// Other stuff
 			ev.NumberPlateText_set(nodeVehicleStuff.child("NumberPlateText").text().as_string());
 			ev.NumberPlateTextIndex_set(nodeVehicleStuff.child("NumberPlateIndex").text().as_int());
 			ev.WheelType_set(nodeVehicleStuff.child("WheelType").text().as_int());
@@ -1752,9 +1748,9 @@ namespace sub
 				SET_VEHICLE_RADIO_LOUD(ev.Handle(), nodeVehicleStuff.child("IsRadioLoud").text().as_int());
 				SET_VEHICLE_RADIO_ENABLED(ev.Handle(), true);
 			}
-			ev.LockStatus_set((VehicleLockStatus)nodeVehicleStuff.child("LockStatus").text().as_int());
+			ev.LockStatus_set((VehicleLockStatus)nodeVehicleStuff.child("LockStatus").text().as_int());*/
 
-			// Neons
+			/*// Neons
 			auto& nodeVehicleNeons = nodeVehicleStuff.child("Neons");
 			RgbS neonLightsRgb;
 			ev.SetNeonLightOn(VehicleNeonLight::Left, nodeVehicleNeons.child("Left").text().as_bool());
@@ -1764,9 +1760,9 @@ namespace sub
 			neonLightsRgb.R = nodeVehicleNeons.child("R").text().as_int();
 			neonLightsRgb.G = nodeVehicleNeons.child("G").text().as_int();
 			neonLightsRgb.B = nodeVehicleNeons.child("B").text().as_int();
-			ev.NeonLightsColour_set(neonLightsRgb);
+			ev.NeonLightsColour_set(neonLightsRgb);*/
 
-			// Extras (modExtras)
+			/*// Extras (modExtras)
 			auto& nodeVehicleModExtras = nodeVehicleStuff.child("ModExtras");
 			for (auto& nodeVehicleModExtrasObject = nodeVehicleModExtras.first_child(); nodeVehicleModExtrasObject; nodeVehicleModExtrasObject = nodeVehicleModExtrasObject.next_sibling())
 			{
@@ -1787,9 +1783,9 @@ namespace sub
 				{
 					ev.SetMod(modType, stoi(modValueStr.substr(0, modValueStr.find(","))), stoi(modValueStr.substr(modValueStr.find(",") + 1)));
 				}
-			}
+			}*/
 
-			// Doors
+			/*// Doors
 			auto& nodeVehicleDoorsOpen = nodeVehicleStuff.child("DoorsOpen");
 			if (nodeVehicleDoorsOpen)
 			{
@@ -1830,9 +1826,9 @@ namespace sub
 
 			if (nodeVehicleStuff.child("WheelsInvisible").text().as_bool()) set_vehicle_wheels_invisible(ev, true);
 			std::string engSoundName = nodeVehicleStuff.child("EngineSoundName").text().as_string();
-			if (engSoundName.length()) set_vehicle_engine_sound_name(ev, engSoundName);
+			if (engSoundName.length()) set_vehicle_engine_sound_name(ev, engSoundName);/*/
 
-			// Multipliers
+			/*// Multipliers
 			auto& nodeVehicleRpmMultiplier = nodeVehicleStuff.child("RpmMultiplier");
 			auto& nodeVehicleTorqueMultiplier = nodeVehicleStuff.child("TorqueMultiplier");
 			auto& nodeVehicleMaxSpeed = nodeVehicleStuff.child("MaxSpeed");
@@ -1856,7 +1852,7 @@ namespace sub
 			{
 				SET_VEHICLE_LIGHT_MULTIPLIER(ev.Handle(), nodeVehicleHeadlightIntensity.text().as_float());
 				g_multList_headlights[ev.Handle()] = nodeVehicleHeadlightIntensity.text().as_float();
-			}
+			}*/
 
 
 			int opacityLevel = nodeVehicle.child("OpacityLevel").text().as_int();

@@ -378,7 +378,6 @@ namespace sub::Spooner
 					model.Unload();
 			}
 
-			SET_NETWORK_ID_CAN_MIGRATE(OBJ_TO_NET(newEntity.Handle.Handle()), true);
 			newEntity.Handle.Dynamic_set(false);
 			newEntity.Handle.FreezePosition(true);
 			newEntity.Handle.FreezePosition(bFreezePos);
@@ -449,7 +448,6 @@ namespace sub::Spooner
 			}
 
 			GTAped ep = newEntity.Handle;
-			SET_NETWORK_ID_CAN_MIGRATE(PED_TO_NET(newEntity.Handle.Handle()), true);
 			newEntity.Handle.FreezePosition(bFreezePos);
 			newEntity.Handle.Dynamic_set(bDynamic);
 			newEntity.Handle.LodDistance_set(1000000);
@@ -463,8 +461,8 @@ namespace sub::Spooner
 			SET_PED_CAN_PLAY_AMBIENT_ANIMS(ep.Handle(), true);
 			SET_PED_CAN_PLAY_AMBIENT_BASE_ANIMS(ep.Handle(), true);
 			SET_PED_CAN_PLAY_GESTURE_ANIMS(ep.Handle(), true);
-			SET_PED_CAN_PLAY_VISEME_ANIMS(ep.Handle(), true, TRUE);
-			_0x33A60D8BDD6E508C(ep.Handle(), true);
+			// SET_PED_CAN_PLAY_VISEME_ANIMS(ep.Handle(), true, TRUE);
+			// _SET_PED_CAN_PLAY_INJURED_ANIMS(ep.Handle(), true);
 
 			SET_PED_PATH_CAN_USE_CLIMBOVERS(ep.Handle(), true);
 			SET_PED_PATH_CAN_USE_LADDERS(ep.Handle(), true);
@@ -536,10 +534,8 @@ namespace sub::Spooner
 				if (unloadModel) model.Unload();
 			}
 
-			SET_NETWORK_ID_CAN_MIGRATE(VEH_TO_NET(newEntity.Handle.Handle()), true);
-			SET_VEHICLE_MOD_KIT(newEntity.Handle.Handle(), 0);
 			SET_VEHICLE_DIRT_LEVEL(newEntity.Handle.Handle(), 0.0f);
-			_SET_VEHICLE_PAINT_FADE(newEntity.Handle.Handle(), 0.3f);
+			// _SET_VEHICLE_PAINT_FADE(newEntity.Handle.Handle(), 0.3f);
 			GTAvehicle(newEntity.Handle).CloseAllDoors(true);
 			newEntity.Handle.FreezePosition(bFreezePos);
 			newEntity.Handle.Dynamic_set(bDynamic);
@@ -630,11 +626,10 @@ namespace sub::Spooner
 			if (entType == EntityType::PROP)
 			{
 				newEntity.Handle = World::CreateProp(orig.Handle.Model(), orig.Handle.Position_get(), orig.Handle.Rotation_get(), bDynamic, false);
-				SET_NETWORK_ID_CAN_MIGRATE(OBJ_TO_NET(newEntity.Handle.Handle()), true);
 				GTAprop eo = newEntity.Handle;
 
-				if (orig.TextureVariation != -1)
-					_0x971DA0055324D033(eo.Handle(), orig.TextureVariation);
+				// if (orig.TextureVariation != -1)
+				//	_SET_OBJECT_TEXTURE_VARIANT(eo.Handle(), orig.TextureVariation);
 			}
 			else if (entType == EntityType::PED)
 			{
@@ -660,17 +655,16 @@ namespace sub::Spooner
 				sub::PedDecals_catind::vPedsAndDecals[ep.Handle()] = sub::PedDecals_catind::vPedsAndDecals[origPed.Handle()];
 				//GTAped(orig.Handle).StoreWeaponsInArray(weaponsBackup);
 				//GTAped(newEntity.Handle).GiveWeaponsFromArray(weaponsBackup);
-				SET_NETWORK_ID_CAN_MIGRATE(ep.NetID(), true);
 				ep.BlockPermanentEvents_set(orig.IsStill);
 				SET_PED_CONFIG_FLAG(ep.Handle(), 223, GET_PED_CONFIG_FLAG(origPed.Handle(), 223, false));
 
 				SET_PED_CAN_PLAY_AMBIENT_ANIMS(ep.Handle(), true);
 				SET_PED_CAN_PLAY_AMBIENT_BASE_ANIMS(ep.Handle(), true);
 				SET_PED_CAN_PLAY_GESTURE_ANIMS(ep.Handle(), true);
-				SET_PED_CAN_PLAY_VISEME_ANIMS(ep.Handle(), true, TRUE);
-				_0x33A60D8BDD6E508C(ep.Handle(), true);
+				// SET_PED_CAN_PLAY_VISEME_ANIMS(ep.Handle(), true, TRUE);
+				// _SET_PED_CAN_PLAY_INJURED_ANIMS(ep.Handle(), true);
 
-				if (!bTaskSeqIsActive && IS_PED_USING_SCENARIO(orig.Handle.Handle(), const_cast<PCHAR>(orig.LastAnimation.name.c_str())))
+				if (!bTaskSeqIsActive /*&& IS_PED_USING_SCENARIO(orig.Handle.Handle(), const_cast<PCHAR>(orig.LastAnimation.name.c_str()))*/)
 				{
 					WAIT(40);
 					ep.Task().StartScenario(orig.LastAnimation.name, -1, false);
@@ -704,7 +698,6 @@ namespace sub::Spooner
 				newEntity.Handle = clone_vehicle(orig.Handle);
 				newEntity.Handle.Position_set(orig.Handle.Position_get());
 				newEntity.Handle.Rotation_set(orig.Handle.Rotation_get());
-				SET_NETWORK_ID_CAN_MIGRATE(VEH_TO_NET(newEntity.Handle.Handle()), true);
 			}
 
 			newEntity.Handle.FreezePosition(bFreezePos);

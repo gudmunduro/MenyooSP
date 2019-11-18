@@ -88,9 +88,6 @@
     <ClCompile Include="Util\keyboard.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Memory\GTAmemory.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
     <ClCompile Include="Menu\MenuConfig.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
@@ -310,6 +307,9 @@
     <ClCompile Include="..\external\pugixml\src\pugixml.cpp">
       <Filter>_external</Filter>
     </ClCompile>
+    <ClCompile Include="Natives\NativeEngine.cpp">
+      <Filter>Natives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Util\ExePath.h">
@@ -325,9 +325,6 @@
       <Filter>Scripting</Filter>
     </ClInclude>
     <ClInclude Include="Natives\natives2.h">
-      <Filter>Natives</Filter>
-    </ClInclude>
-    <ClInclude Include="Natives\natives.h">
       <Filter>Natives</Filter>
     </ClInclude>
     <ClInclude Include="Natives\types.h">
@@ -396,9 +393,6 @@
     <ClInclude Include="Scripting\Tasks.h">
       <Filter>Scripting\Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Natives\nativeCaller.h">
-      <Filter>Natives</Filter>
-    </ClInclude>
     <ClInclude Include="Menu\Menu.h">
       <Filter>Menu</Filter>
     </ClInclude>
@@ -408,9 +402,6 @@
     <ClInclude Include="macros.h" />
     <ClInclude Include="Util\keyboard.h">
       <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Memory\GTAmemory.h">
-      <Filter>Memory</Filter>
     </ClInclude>
     <ClInclude Include="Menu\MenuConfig.h">
       <Filter>Menu</Filter>
@@ -637,6 +628,18 @@
     <ClInclude Include="..\external\pugixml\src\pugiconfig.hpp">
       <Filter>_external</Filter>
     </ClInclude>
+    <ClInclude Include="Natives\Hash.h">
+      <Filter>Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Natives\NativeEngine.h">
+      <Filter>Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Natives\natives.h">
+      <Filter>Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\alt-log.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Submenus">
@@ -659,9 +662,6 @@
     </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{210335ae-d80e-447a-87e4-919ce01e9e22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Memory">
-      <UniqueIdentifier>{ce457d27-1694-45c1-8cad-1c1dca1873e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Misc">
       <UniqueIdentifier>{9992b68d-e1d4-4bc4-9f48-81ada311a326}</UniqueIdentifier>

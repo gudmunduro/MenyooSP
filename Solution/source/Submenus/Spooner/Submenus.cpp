@@ -2309,7 +2309,6 @@ namespace sub
 
 			if (pedops_friend)
 			{
-				NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(thisPed.NetID());
 				if (myPedGroup.Exists())
 				{
 					if (!myPedGroup.Contains(thisPed))

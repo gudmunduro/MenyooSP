@@ -10,6 +10,7 @@
 #pragma once
 
 #include <stdlib.h> //rand()
+#include "GTAmath.h"
 
 typedef int BOOL, INT;
 typedef unsigned long DWORD;

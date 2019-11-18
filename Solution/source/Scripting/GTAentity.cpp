@@ -612,7 +612,6 @@ bool GTAentity::RequestControlOnce()
 {
 	if (!NETWORK_IS_IN_SESSION() || this->HasControl())
 		return true;
-	NETWORK::SET_NETWORK_ID_CAN_MIGRATE(this->NetID(), true);
 	return NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(this->mHandle) != 0;
 }
 bool GTAentity::RequestControl()

@@ -103,8 +103,7 @@ namespace _MeteorShower_
 			Model model = rockModels[rand() % (int)rockModels.size()];
 
 
-			GTAprop rock = CREATE_OBJECT(model.hash, pos.x, pos.y, pos.z, 1, 1, 1);
-			SET_NETWORK_ID_CAN_MIGRATE(rock.NetID(), true);
+			GTAprop rock = CREATE_OBJECT(model.hash, pos.x, pos.y, pos.z, 1, 1, 1, 1, 1);
 			rock.Heading_set(GET_RANDOM_FLOAT_IN_RANGE(0.0f, 360.0f));
 			rock.FreezePosition(false);
 			SET_ENTITY_LOD_DIST(rock.Handle(), 1000000);

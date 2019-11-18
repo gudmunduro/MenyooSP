@@ -379,7 +379,6 @@ namespace sub
 			GTAped clone = playerPed.Clone(playerPed.Heading_get(), true, true);
 			auto cloneNetId = clone.NetID();
 			Game::RequestControlOfId(cloneNetId);
-			SET_NETWORK_ID_CAN_MIGRATE(cloneNetId, true);
 			SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(cloneNetId, true);
 			clone.BlockPermanentEvents_set(true);
 			SET_PED_COMBAT_ABILITY(cloneNetId, 100);
@@ -396,7 +395,6 @@ namespace sub
 			clone.RequestControl(300);
 			auto cloneNetId = clone.NetID();
 			Game::RequestControlOfId(cloneNetId);
-			SET_NETWORK_ID_CAN_MIGRATE(cloneNetId, true);
 			SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(cloneNetId, true);
 			//clone.BlockPermanentEvents_set(true);
 			SET_PED_COMBAT_ABILITY(cloneNetId, 200);
@@ -440,7 +438,6 @@ namespace sub
 			clone.RequestControl(300);
 			auto cloneNetId = clone.NetID();
 			Game::RequestControlOfId(cloneNetId);
-			SET_NETWORK_ID_CAN_MIGRATE(cloneNetId, true);
 			SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(cloneNetId, true);
 			clone.BlockPermanentEvents_set(true);
 			SET_PED_COMBAT_ABILITY(cloneNetId, 100);
